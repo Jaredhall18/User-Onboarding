@@ -8,7 +8,7 @@ import User from './components/User'
 
 //Initial States for Form
 const initialFormValues = {
-  name: '',
+  first_name: '',
   //last_name:
   email: '',
   password: '',
@@ -17,7 +17,7 @@ const initialFormValues = {
 }
 //Initial State for Errors
 const initialFormErrors = {
-  name: '',
+  first_name: '',
   email: '',
   password: '',
 }
@@ -71,7 +71,7 @@ const inputChange = (name, value) => {
 
 const formSubmit = () => {
   const newUser = {
-  name: formValues.name.trim(),
+  first_name: formValues.first_name.trim(),
   email: formValues.email.trim(),
   password: formValues.password.trim(),
   tos: !!formValues.tos

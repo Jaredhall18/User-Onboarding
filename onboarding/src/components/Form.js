@@ -51,7 +51,7 @@ export default function Form(props) {
                 </label>
                 <label> Password
                     <input
-                    value={values.name}
+                    value={values.password}
                     onChange={onChange}
                     name= 'password'
                     type= 'text'

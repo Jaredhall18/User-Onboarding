@@ -4,10 +4,12 @@ import schema from './validation/FormSchema'
 import './App.css';
 import * as yup from 'yup'
 import axios from 'axios'
+import User from './components/User'
 
 //Initial States for Form
 const initialFormValues = {
   name: '',
+  //last_name:
   email: '',
   password: '',
   //Checkbox
@@ -26,7 +28,7 @@ const initialDisabled = true
 
 function App() {
 //Set all of our States!
-const [user, setUser] = useState(initialUsers)
+const [users, setUsers] = useState(initialUsers)
 const [formValues, setFormValues] = useState(initialFormValues)
 const [formErrors, setFormErrors] = useState(initialFormErrors)
 const [disabled, setDisabled] = useState(initialDisabled)
@@ -35,7 +37,7 @@ const [disabled, setDisabled] = useState(initialDisabled)
 const getUser = () => {
   axios.get('https://reqres.in/api/users')
   .then(res => {
-    setUser(res.data);
+    setUsers(res.data.data);
   }).catch(err => console.error(err))
 }
 
@@ -43,7 +45,7 @@ const getUser = () => {
 const postNewUser = newUser => {
   axios.post('https://reqres.in/api/users', newUser)
   .then(res => {
-    setUser([res.data, ...user])
+    setUsers([res.data, ...users])
     setFormValues(initialFormValues);
   }).catch(err => {
     console.error(err);
@@ -77,16 +79,34 @@ const formSubmit = () => {
   postNewUser(newUser);
 }
 
+//Side Effects
+
+useEffect(() => {
+  getUser()
+}, [])
+
+useEffect(() => {
+  schema.isValid(formValues).then(valid => setDisabled(!valid))
+}, [formValues])
+
   return (
     <div className="App">
       <header><h1>Form</h1></header>
-    <Form 
+      <Form 
       values={formValues}
       change= {inputChange}
       submit= {formSubmit}
       disabled= {disabled}
       errors= {formErrors}
-    />
+      />
+
+      {
+        users.map(user => {
+          return (
+            <User key={user.id} details={user} />
+          )
+        })
+      }
     </div>
   );
 }
